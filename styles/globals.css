@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light; /* <- em vez de "light dark" */
 }
 body {
   @apply bg-gradient-to-br from-violet-50 via-white to-white min-h-screen;
+}
+@layer base {
+  input, textarea, select {
+    @apply bg-white text-gray-900 placeholder:text-gray-500;
+  }
 }
