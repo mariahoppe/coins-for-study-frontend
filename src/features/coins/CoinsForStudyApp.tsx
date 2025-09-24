@@ -1,4 +1,6 @@
 "use client";
+
+import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -107,11 +109,13 @@ function Shell({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Login({ onSubmit }: { onSubmit: (u: {name: string; role: string}) => void }) {
+
+function Login({ onSubmit }: { onSubmit: (u: { name: string; role: string }) => void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("student");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   function handleLogin() {
     if (!email || !password) {
@@ -119,37 +123,163 @@ function Login({ onSubmit }: { onSubmit: (u: {name: string; role: string}) => vo
       return;
     }
     setError("");
-    onSubmit({ name: email.split("@")[0] || "aluno", role });
+    setLoading(true);
+    // aqui você pode trocar por sua chamada de API real
+    setTimeout(() => {
+      setLoading(false);
+      onSubmit({ name: email.split("@")[0] || "aluno", role });
+    }, 400);
   }
 
-  return (
-    <Shell>
-      <div className="mx-auto max-w-md">
-        <Card className="rounded-2xl">
-          <CardHeader>
-            <CardTitle className="text-2xl">Acessar plataforma</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Label>Email</Label>
-            <Input placeholder="nome@escola.edu" value={email} onChange={(e)=>setEmail(e.target.value)} className="rounded-2xl"/>
-            <Label>Senha</Label>
-            <Input type="password" placeholder="********" value={password} onChange={(e)=>setPassword(e.target.value)} className="rounded-2xl"/>
+  function handleCreateAccount() {
+    alert("Redirecionar para tela de cadastro!");
+  }
+
+ return (
+  <div className="h-screen w-screen overflow-hidden grid lg:grid-cols-[1fr_460px] bg-black">
+    {/* Lado esquerdo - imagem */}
+    <section className="relative hidden lg:block">
+      <Image
+        src="/imagem_coins.png"
+        alt="Coins for Study"
+        fill
+        priority
+        className="object-cover object-left"
+      />
+    </section>
+
+    {/* Painel direito - fundo branco, compacto */}
+    <aside className="relative flex items-center justify-center bg-white">
+      <Card className="w-full max-w-sm rounded-2xl bg-white text-zinc-900 shadow-2xl">
+        {/* Header compacto */}
+        <CardHeader className="flex flex-col items-center pt-5 pb-1 gap-1">
+          <Image
+            src="/logo-coins.png"
+            alt="Coins for Study"
+            width={200}
+            height={200}
+            priority
+            className="block rounded-2xl drop-shadow-md
+                       w-16 h-16 sm:w-20 sm:h-20 lg:w-28 lg:h-28 xl:w-40 xl:h-40"
+          />
+          <CardTitle className="text-xl font-semibold leading-tight">
+            Acesse sua conta
+          </CardTitle>
+        </CardHeader>
+
+        {/* Conteúdo compacto */}
+        <CardContent className="px-6 pb-5">
+          {/* Social mais baixo e curto */}
+          <div className="grid grid-cols-2 gap-2.5 mb-4">
+            <Button
+              type="button"
+              variant="outline"
+              className="h-10 rounded-xl border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50"
+              onClick={() => alert("TODO: OAuth GitHub")}
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 mr-2" aria-hidden="true">
+                <path fill="currentColor" d="M12 .5A11.5 11.5 0 0 0 .5 12.6c0 5.3 3.4 9.7 8.2 11.2.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.5-1.4-1.9-1.4-1.9-1.2-.8.1-.8.1-.8 1.3.1 2 .9 2 .9 1.2 2 2.9 1.4 3.6 1.1.1-.9.5-1.4.8-1.7-2.7-.3-5.6-1.4-5.6-6.1 0-1.4.5-2.5 1.3-3.4-.1-.3-.6-1.7.1-3.5 0 0 1.1-.4 3.5 1.3a11.9 11.9 0 0 1 6.4 0c2.4-1.7 3.5-1.3 3.5-1.3.7 1.8.2 3.2.1 3.5.8.9 1.3 2 1.3 3.4 0 4.7-2.9 5.8-5.7 6.1.5.4.9 1.1.9 2.3v3.3c0 .3.2.7.8.6 4.8-1.5 8.2-5.9 8.2-11.2A11.5 11.5 0 0 0 12 .5z"/>
+              </svg>
+              GitHub
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-10 rounded-xl border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50"
+              onClick={() => alert("TODO: OAuth Google")}
+            >
+              <svg viewBox="0 0 48 48" className="h-4 w-4 mr-2" aria-hidden="true">
+                <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 31.9 29.2 35 24 35c-6.6 0-12-5.4-12-12S17.4 11 24 11c3 0 5.7 1.1 7.7 3l5.7-5.7C34 4.7 29.3 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.2-.1-2.3-.4-3.5z"/>
+                <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.7 18.9 13 24 13c3 0 5.7 1.1 7.7 3l5.7-5.7C34 4.7 29.3 3 24 3 15.1 3 7.6 8.1 4.3 15.4l2 2.3z"/>
+                <path fill="#4CAF50" d="M24 45c5.1 0 9.8-1.9 13.3-5.1l-6.1-5c-2 1.5-4.6 2.4-7.2 2.4-5.1 0-9.4-3.3-10.9-7.8l-6.7 5.2C9.7 40.4 16.3 45 24 45z"/>
+                <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.3 3.8-4.8 7-9.3 7-5.1 0-9.4-3.3-10.9-7.8l-6.7 5.2C9.7 40.4 16.3 45 24 45c9.9 0 18-8.1 18-18 0-1.2-.1-2.3-.4-3.5z"/>
+              </svg>
+              Google
+            </Button>
+          </div>
+
+          {/* Form compacto */}
+          <div className="space-y-3">
             <div>
-              <Label>Perfil</Label>
-              <select value={role} onChange={(e)=>setRole(e.target.value)} className="mt-1 w-full rounded-2xl border px-3 py-2">
+              <Label className="text-zinc-800 text-sm">E-mail</Label>
+              <Input
+                placeholder="nome@escola.edu"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-10 rounded-xl bg-white text-zinc-900 border-zinc-300 placeholder:text-zinc-400 focus-visible:ring-violet-600"
+              />
+            </div>
+
+            <div>
+              <div className="mb-1 flex items-center justify-between">
+                <Label className="text-zinc-800 text-sm">Senha</Label>
+                <button
+                  type="button"
+                  className="text-xs text-violet-700 hover:text-violet-800"
+                  onClick={() => alert('Fluxo de recuperação de senha')}
+                >
+                  Esqueci minha senha
+                </button>
+              </div>
+              <Input
+                type="password"
+                placeholder="********"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-10 rounded-xl bg-white text-zinc-900 border-zinc-300 placeholder:text-zinc-400 focus-visible:ring-violet-600"
+              />
+            </div>
+
+            <div>
+              <Label className="text-zinc-800 text-sm">Perfil</Label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="mt-1 h-10 w-full rounded-xl border border-zinc-300 bg-white px-3 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-violet-600"
+              >
                 <option value="student">Aluno</option>
                 <option value="teacher">Professor</option>
                 <option value="admin">Administrador</option>
               </select>
             </div>
-            {error ? <p className="text-sm text-red-600">{error}</p> : null}
-            <Button className="w-full rounded-2xl">Entrar</Button>
-            <Button variant="ghost" className="w-full rounded-2xl" onClick={handleLogin}>Confirmar Login</Button>
-          </CardContent>
-        </Card>
-      </div>
-    </Shell>
-  );
+
+            {error && <p className="text-sm text-red-600">{error}</p>}
+
+            <Button
+              className="h-11 w-full rounded-xl bg-violet-700 hover:bg-violet-600 text-white"
+              onClick={handleLogin}
+              disabled={loading}
+            >
+              {loading ? "Entrando…" : "Entrar"}
+            </Button>
+
+            <div className="mt-4 h-px bg-zinc-200" />
+
+            <Button
+              variant="outline"
+              className="h-10 w-full rounded-xl border-violet-700 text-violet-700 hover:bg-violet-50"
+              onClick={handleCreateAccount}
+            >
+              Criar conta
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </aside>
+
+    {/* Mobile: imagem no topo */}
+    <div className="lg:hidden relative h-48 w-full">
+      <Image
+        src="/imagem_coins.png"
+        alt="Coins for Study"
+        fill
+        priority
+        className="object-cover object-left"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+    </div>
+  </div>
+);
 }
 
 function StudentDashboard() {
@@ -750,7 +880,7 @@ export default function CoinsForStudyApp() {
 
   return (
     <div className="min-h-dvh bg-gradient-to-br from-violet-50 via-white to-white">
-      <div className="mx-auto max-w-7xl py-6 px-4">
+      <div className="mx-auto">
         {main}
       </div>
     </div>

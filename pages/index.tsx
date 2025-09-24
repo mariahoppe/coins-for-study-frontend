@@ -1,11 +1,10 @@
 import dynamic from "next/dynamic";
 
 const CoinsForStudyApp = dynamic(
-  () => import("../src/features/coins/CoinsForStudyApp").then(m => m.default),
+  () => import("../src/features/coins/CoinsForStudyApp"),
   { ssr: false }
 );
 
-export default function Home() {
+export default function HomePage() {
   return <CoinsForStudyApp />;
 }
-
